@@ -1,0 +1,17 @@
+framework:
+    messenger:
+        failure_transport: failed
+        transports:
+            collect_user_info:
+                dsn: "%env(MESSENGER_TRANSPORT_DSN)%"
+                options:
+                    queue_name: collect_user_info
+                retry_strategy:
+                    max_retries: 5
+            failed:
+                dsn: "%env(MESSENGER_TRANSPORT_DSN)%"
+                options:
+                    queue_name: failed
+
+        routing:
+            'App\Message\UserInfoMessage': collect_user_info

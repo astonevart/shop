@@ -1,0 +1,61 @@
+version: '2'
+services:
+    fpm:
+        container_name: shop_fpm
+        build:
+            context: ../
+            dockerfile: ./docker/fpm/Dockerfile
+        env_file: env.conf
+        depends_on:
+            - db
+        volumes:
+            - ../:/code
+        networks:
+            - default
+        restart: "no"
+
+    nginx:
+        container_name: shop_nginx
+        image: nginx:1.23.3
+        depends_on:
+            - fpm
+        volumes_from:
+            - fpm:ro
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf
+        ports:
+            - '81:80'
+        restart: "no"
+        networks:
+            - default
+
+    db:
+        container_name: shop_db
+        image: mariadb:10.6.3
+        volumes:
+            - ./mariadb:/var/lib/mysql
+        restart: "no"
+        ports:
+            - '33360:3306'
+        environment:
+            - MYSQL_ROOT_PASSWORD=mypass
+            - MYSQL_DATABASE=shop
+        networks:
+            - default
+
+    message_consumer:
+        image: shop_fpm:latest
+        container_name: shop_message_consumer
+        depends_on:
+            - fpm
+        env_file: env.conf
+        volumes_from:
+            - fpm
+        entrypoint: /code/docker/message_consumer/entrypoint.sh
+        restart: always
+        networks:
+            - default
+
+networks:
+    default:
+        driver: bridge

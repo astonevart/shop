@@ -1,0 +1,10 @@
+.idea
+/vendor/
+/.env.local
+/.env.local.php
+/.env.*.local
+/public/bundles/
+/var/
+.phpunit.result.cache
+/phpunit.xml
+/docker/mariadb
