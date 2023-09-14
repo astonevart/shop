@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserInfoRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserInfoRepository::class)]
@@ -13,20 +14,20 @@ class UserInfo
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $userAgent;
 
     #[ORM\Column(length: 255, unique: true)]
     private ?string $identifier;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 45)]
     private ?string $ip;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt;
 
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updatedAt = null;
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt;
 
     public function __construct()
     {
@@ -86,19 +87,12 @@ class UserInfo
         return $this;
     }
 
-    public function setUpdatedAtNow(): self
-    {
-        $this->setUpdatedAt(new \DateTimeImmutable());
-
-        return $this;
-    }
-
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
 

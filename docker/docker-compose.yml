@@ -5,6 +5,7 @@ services:
         build:
             context: ../
             dockerfile: ./docker/fpm/Dockerfile
+        image: shop_fpm:1.0
         env_file: env.conf
         depends_on:
             - db
@@ -44,7 +45,7 @@ services:
             - default
 
     message_consumer:
-        image: shop_fpm:latest
+        image: shop_fpm:1.0
         container_name: shop_message_consumer
         depends_on:
             - fpm

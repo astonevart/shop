@@ -7,6 +7,7 @@ class UserInfoMessage
     public function __construct(
         private readonly string $ip,
         private readonly string $userAgent,
+        private readonly \DateTimeImmutable $createdAt,
     ) {}
 
     public function getIp(): string
@@ -17,5 +18,10 @@ class UserInfoMessage
     public function getUserAgent(): string
     {
         return $this->userAgent;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
     }
 }

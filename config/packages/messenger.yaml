@@ -1,8 +1,14 @@
 framework:
     messenger:
+        serializer:
+            default_serializer: messenger.transport.symfony_serializer
+            symfony_serializer:
+                format: json
+                context: { }
         failure_transport: failed
         transports:
             collect_user_info:
+                serializer: messenger.transport.symfony_serializer
                 dsn: "%env(MESSENGER_TRANSPORT_DSN)%"
                 options:
                     queue_name: collect_user_info
